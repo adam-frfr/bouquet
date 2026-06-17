@@ -53,6 +53,7 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         body {
@@ -855,6 +856,10 @@
         }
 
         @media (max-width: 640px) {
+            .grain {
+                display: none;
+            }
+
             section {
                 padding: 80px 0;
             }
@@ -901,7 +906,7 @@
 <body>
 
     <!-- Background music -->
-    <audio id="bg-music" src="music/song.mp3" loop preload="auto"></audio>
+    <audio id="bg-music" src="music/song.mp3" loop autoplay preload="auto"></audio>
     <button class="music-btn" id="music-btn" aria-label="Toggle Music" title="Play/Pause Music">🎵</button>
 
     <!-- paper grain texture -->
@@ -1290,7 +1295,17 @@
             toggleMusic();
         });
 
-        // Autoplay on first interaction (browsers require interaction to play audio)
+        // Attempt autoplay on load (if allowed by browser policy)
+        window.addEventListener('load', () => {
+            music.play().then(() => {
+                musicStarted = true;
+                musicBtn.textContent = '🔊';
+            }).catch(() => {
+                // Autoplay blocked by browser policy, fallback to click interaction
+            });
+        });
+
+        // Autoplay fallback on first interaction (browsers require interaction to play audio)
         document.body.addEventListener('click', () => {
             if (!musicStarted) {
                 musicStarted = true;
