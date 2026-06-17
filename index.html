@@ -872,10 +872,37 @@
                 width: 78vw;
             }
         }
+
+        .music-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--ink);
+            box-shadow: 2px 4px 0 var(--shadow);
+            cursor: pointer;
+            z-index: 9999;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- Background music -->
+    <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
+    <button class="music-btn" id="music-btn" aria-label="Toggle Music" title="Play/Pause Music">🎵</button>
 
     <!-- paper grain texture -->
     <svg class="grain" xmlns="http://www.w3.org/2000/svg">
@@ -1241,6 +1268,37 @@
         }
 
         surpriseBtn.addEventListener('click', spawnConfetti);
+
+        // ---------- Background Music ----------
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        let musicStarted = false;
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.textContent = '🔊';
+            } else {
+                music.pause();
+                musicBtn.textContent = '🔇';
+            }
+        }
+
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent triggering the document click
+            musicStarted = true;
+            toggleMusic();
+        });
+
+        // Autoplay on first interaction (browsers require interaction to play audio)
+        document.body.addEventListener('click', () => {
+            if (!musicStarted) {
+                musicStarted = true;
+                music.play().then(() => {
+                    musicBtn.textContent = '🔊';
+                }).catch(() => {});
+            }
+        });
     </script>
 
 </body>
