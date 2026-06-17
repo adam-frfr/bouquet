@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For You 💛</title>
+
+    <!--
+  ============================================================
+  CUSTOMIZE ME — quick guide
+  1. Search for "My Favorite Person" near the top of <body> and
+     change it to her name if you'd like it personal.
+  2. Search for [Your Name] near the bottom (the letter signature)
+     and put your own name in.
+  3. In the "Worth Pinning Up" section, swap the dashed polaroid
+     placeholders for real <img> tags with your photos.
+  4. The 7 "reasons" in the garden section are generic on purpose —
+     edit reason-note text to make them about her specifically.
+  ============================================================
+-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&family=Patrick+Hand&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --paper: #FBF1E3;
+            --paper-deep: #F4E3C4;
+            --paper-line: #E7D3AE;
+            --ink: #3D3530;
+            --ink-soft: #75695C;
+            --rose: #E8A0A8;
+            --rose-deep: #D97D8C;
+            --sage: #8FA888;
+            --sage-deep: #66805E;
+            --butter: #F0C75E;
+            --butter-deep: #DCA931;
+            --sky: #94B4D9;
+            --sky-deep: #6D93BD;
+            --terracotta: #D9784F;
+            --shadow: rgba(61, 53, 48, 0.18);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ---------- paper grain overlay ---------- */
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.05;
+            mix-blend-mode: multiply;
+        }
+
+        /* ---------- shared ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .handwritten {
+            font-family: 'Caveat', cursive;
+        }
+
+        .note-font {
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        section {
+            position: relative;
+            padding: 110px 0;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.1rem;
+            color: var(--rose-deep);
+            background: rgba(232, 160, 168, 0.15);
+            border: 2px dashed var(--rose);
+            padding: 6px 18px;
+            border-radius: 999px;
+            transform: rotate(-2deg);
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            line-height: 1.05;
+            margin-top: 14px;
+            color: var(--ink);
+        }
+
+        .section-title .accent {
+            color: var(--rose-deep);
+        }
+
+        .section-sub {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.2rem;
+            color: var(--ink-soft);
+            margin-top: 10px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+
+        [data-animate].in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ====================================================
+     BACKGROUND BLOBS (depth)
+  ==================================================== */
+        .bg-blobs {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.35;
+        }
+
+        .blob.b1 {
+            width: 420px;
+            height: 420px;
+            background: var(--rose);
+            top: -120px;
+            left: -100px;
+        }
+
+        .blob.b2 {
+            width: 380px;
+            height: 380px;
+            background: var(--sky);
+            top: 30%;
+            right: -140px;
+        }
+
+        .blob.b3 {
+            width: 340px;
+            height: 340px;
+            background: var(--butter);
+            bottom: -100px;
+            left: 18%;
+        }
+
+        .blob.b4 {
+            width: 300px;
+            height: 300px;
+            background: var(--sage);
+            bottom: 10%;
+            right: 10%;
+        }
+
+        /* ====================================================
+     HERO
+  ==================================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .sun-wrap {
+            position: absolute;
+            top: 48px;
+            right: 7%;
+            width: 120px;
+            height: 120px;
+        }
+
+        .cloud {
+            position: absolute;
+            opacity: 0.9;
+        }
+
+        .cloud.c1 {
+            top: 110px;
+            left: 6%;
+            width: 140px;
+            animation: drift1 22s ease-in-out infinite;
+        }
+
+        .cloud.c2 {
+            top: 220px;
+            right: 18%;
+            width: 100px;
+            animation: drift2 18s ease-in-out infinite;
+        }
+
+        @keyframes drift1 {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            50% {
+                transform: translateX(40px)
+            }
+        }
+
+        @keyframes drift2 {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            50% {
+                transform: translateX(-30px)
+            }
+        }
+
+        .hero-tag {
+            font-family: 'Patrick Hand', cursive;
+            color: var(--ink-soft);
+            font-size: 1.15rem;
+            background: white;
+            border: 2px solid var(--ink);
+            border-radius: 999px;
+            padding: 8px 22px;
+            transform: rotate(-2deg);
+            box-shadow: 3px 4px 0 var(--shadow);
+        }
+
+        .hero h1 {
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: clamp(3.4rem, 11vw, 7.5rem);
+            line-height: 1;
+            margin-top: 26px;
+            color: var(--ink);
+            position: relative;
+        }
+
+        .hero h1 .underline {
+            position: relative;
+            color: var(--rose-deep);
+        }
+
+        .hero h1 .underline svg {
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 100%;
+            height: 18px;
+        }
+
+        .hero p.lede {
+            font-family: 'Patrick Hand', cursive;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--ink-soft);
+            margin-top: 18px;
+            max-width: 520px;
+        }
+
+        .hero-flowers {
+            display: flex;
+            gap: 18px;
+            margin-top: 46px;
+        }
+
+        .hero-flowers svg {
+            width: 54px;
+            height: 54px;
+            animation: sway 4s ease-in-out infinite;
+        }
+
+        .hero-flowers svg:nth-child(2) {
+            animation-delay: .4s;
+        }
+
+        .hero-flowers svg:nth-child(3) {
+            animation-delay: .8s;
+        }
+
+        .hero-flowers svg:nth-child(4) {
+            animation-delay: 1.2s;
+        }
+
+        .hero-flowers svg:nth-child(5) {
+            animation-delay: 1.6s;
+        }
+
+        @keyframes sway {
+
+            0%,
+            100% {
+                transform: rotate(-6deg)
+            }
+
+            50% {
+                transform: rotate(6deg)
+            }
+        }
+
+        .scroll-cue {
+            margin-top: 56px;
+            font-family: 'Patrick Hand', cursive;
+            color: var(--ink-soft);
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            animation: bob 2s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(8px)
+            }
+        }
+
+        /* butterfly that flies across the whole page */
+        .butterfly-fly {
+            position: fixed;
+            top: 22%;
+            left: -60px;
+            width: 46px;
+            height: 40px;
+            z-index: 5;
+            pointer-events: none;
+            animation: flyAcross 26s linear infinite;
+        }
+
+        @keyframes flyAcross {
+            0% {
+                left: -60px;
+                top: 20%;
+                transform: translateY(0) rotate(0deg);
+            }
+
+            20% {
+                left: 25%;
+                top: 12%;
+                transform: translateY(-10px) rotate(8deg);
+            }
+
+            40% {
+                left: 50%;
+                top: 30%;
+                transform: translateY(10px) rotate(-6deg);
+            }
+
+            60% {
+                left: 72%;
+                top: 16%;
+                transform: translateY(-8px) rotate(6deg);
+            }
+
+            80% {
+                left: 92%;
+                top: 34%;
+                transform: translateY(6px) rotate(-4deg);
+            }
+
+            100% {
+                left: 110%;
+                top: 22%;
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        .wing {
+            animation: flap .35s ease-in-out infinite alternate;
+            transform-origin: 50% 50%;
+        }
+
+        @keyframes flap {
+            from {
+                transform: scaleX(1)
+            }
+
+            to {
+                transform: scaleX(0.55)
+            }
+        }
+
+        /* ====================================================
+     GARDEN SECTION
+  ==================================================== */
+        .garden {
+            background: var(--paper-deep);
+            border-top: 2px dashed var(--paper-line);
+            border-bottom: 2px dashed var(--paper-line);
+        }
+
+        .garden-bed {
+            position: relative;
+            margin-top: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: clamp(6px, 2vw, 26px);
+            flex-wrap: wrap;
+            padding-bottom: 40px;
+        }
+
+        .soil {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 70px;
+            z-index: 0;
+        }
+
+        .bloom-item {
+            position: relative;
+            z-index: 1;
+            width: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flower-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 100px;
+            height: 160px;
+            display: block;
+        }
+
+        .flower-btn svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .petals {
+            opacity: 0;
+            transform: scale(.25);
+            transform-box: fill-box;
+            transform-origin: 50% 50%;
+            transition: transform .65s cubic-bezier(.34, 1.56, .64, 1), opacity .5s ease;
+        }
+
+        .bud {
+            opacity: 1;
+            transform: scale(1);
+            transform-box: fill-box;
+            transform-origin: 50% 50%;
+            transition: transform .4s ease, opacity .3s ease;
+        }
+
+        .flower-btn.bloomed .petals {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .flower-btn.bloomed .bud {
+            opacity: 0;
+            transform: scale(.2);
+        }
+
+        .flower-btn:not(.bloomed):hover .bud {
+            transform: scale(1.12);
+        }
+
+        .hint {
+            font-family: 'Patrick Hand', cursive;
+            font-size: .85rem;
+            color: var(--ink-soft);
+            opacity: .8;
+            margin-top: 4px;
+        }
+
+        .bloom-item.active .hint {
+            display: none;
+        }
+
+        .reason-note {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height .55s ease, opacity .5s ease, margin .5s ease;
+            font-family: 'Patrick Hand', cursive;
+            font-size: .98rem;
+            color: var(--ink);
+            background: white;
+            border: 2px solid var(--ink);
+            border-radius: 14px;
+            padding: 0 14px;
+            box-shadow: 3px 3px 0 var(--shadow);
+        }
+
+        .bloom-item.active .reason-note {
+            max-height: 260px;
+            opacity: 1;
+            padding: 12px 14px;
+            margin-top: 8px;
+        }
+
+        /* ====================================================
+     CORKBOARD / PHOTOS
+  ==================================================== */
+        .corkboard {
+            background:
+                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.04) 1px, transparent 1.4px) 0 0/14px 14px,
+                var(--paper);
+        }
+
+        .polaroids {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 34px;
+            margin-top: 64px;
+        }
+
+        .polaroid {
+            background: white;
+            width: 220px;
+            padding: 14px 14px 22px;
+            border-radius: 4px;
+            box-shadow: 0 10px 24px var(--shadow);
+            position: relative;
+            transition: transform .3s ease;
+        }
+
+        .polaroid:hover {
+            transform: translateY(-6px) rotate(0deg) !important;
+        }
+
+        .polaroid:nth-child(1) {
+            transform: rotate(-4deg);
+        }
+
+        .polaroid:nth-child(2) {
+            transform: rotate(3deg);
+        }
+
+        .polaroid:nth-child(3) {
+            transform: rotate(-2deg);
+        }
+
+        .polaroid:nth-child(4) {
+            transform: rotate(4deg);
+        }
+
+        .polaroid .frame {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border: 2px dashed var(--paper-line);
+            background: linear-gradient(135deg, #FBF1E3, #F4E3C4);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--ink-soft);
+            font-family: 'Patrick Hand', cursive;
+            font-size: .85rem;
+            padding: 10px;
+        }
+
+        .polaroid .frame svg {
+            width: 46px;
+            height: 46px;
+            opacity: .5;
+        }
+
+        .polaroid .cap {
+            font-family: 'Caveat', cursive;
+            font-size: 1.25rem;
+            text-align: center;
+            margin-top: 10px;
+            color: var(--ink);
+        }
+
+        .tape {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-4deg);
+            width: 64px;
+            height: 26px;
+            background: repeating-linear-gradient(45deg, rgba(148, 180, 217, .55), rgba(148, 180, 217, .55) 6px, rgba(148, 180, 217, .35) 6px, rgba(148, 180, 217, .35) 12px);
+            opacity: .85;
+            border-radius: 2px;
+        }
+
+        .polaroid:nth-child(even) .tape {
+            background: repeating-linear-gradient(45deg, rgba(232, 160, 168, .6), rgba(232, 160, 168, .6) 6px, rgba(232, 160, 168, .4) 6px, rgba(232, 160, 168, .4) 12px);
+        }
+
+        /* ====================================================
+     LETTER / ENVELOPE
+  ==================================================== */
+        .letter-section {
+            background: var(--paper-deep);
+        }
+
+        .envelope-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .envelope {
+            width: min(360px, 86vw);
+            aspect-ratio: 3/2;
+            position: relative;
+            cursor: pointer;
+            perspective: 800px;
+        }
+
+        .envelope .body {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            border: 3px solid var(--ink);
+            border-radius: 6px;
+            box-shadow: 6px 8px 0 var(--shadow);
+            overflow: hidden;
+        }
+
+        .envelope .body::before,
+        .envelope .body::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            width: 55%;
+            height: 100%;
+            border-top: 3px solid var(--ink);
+        }
+
+        .envelope .body::before {
+            left: 0;
+            background: var(--paper);
+            clip-path: polygon(0 0, 100% 100%, 0 100%);
+        }
+
+        .envelope .body::after {
+            right: 0;
+            background: var(--paper);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        .envelope .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 62%;
+            background: var(--rose);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            transition: transform .7s ease;
+            z-index: 3;
+            border-bottom: 3px solid var(--ink);
+        }
+
+        .envelope.open .flap {
+            transform: rotateX(180deg);
+        }
+
+        .seal {
+            position: absolute;
+            top: 44%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--terracotta);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+            z-index: 4;
+            transition: opacity .3s ease;
+        }
+
+        .envelope.open .seal {
+            opacity: 0;
+        }
+
+        .seal svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .tap-label {
+            position: absolute;
+            bottom: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Patrick Hand', cursive;
+            color: var(--ink-soft);
+            font-size: .95rem;
+        }
+
+        .envelope.open .tap-label {
+            display: none;
+        }
+
+        .letter-card {
+            max-width: 600px;
+            margin: 70px auto 0;
+            background: #fffdf8;
+            border: 2px solid var(--paper-line);
+            border-radius: 10px;
+            box-shadow: 0 14px 30px var(--shadow);
+            padding: 0 40px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height .8s ease, opacity .8s ease, padding .8s ease;
+        }
+
+        .letter-card.open {
+            max-height: 900px;
+            opacity: 1;
+            padding: 40px;
+        }
+
+        .letter-card p {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .letter-card .sign {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: var(--rose-deep);
+            margin-top: 6px;
+        }
+
+        /* ====================================================
+     CLOSER
+  ==================================================== */
+        .closer {
+            text-align: center;
+            padding-bottom: 140px;
+        }
+
+        .surprise-btn {
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: 1.6rem;
+            background: var(--rose-deep);
+            color: white;
+            border: none;
+            padding: 16px 38px;
+            border-radius: 999px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 4px 6px 0 var(--shadow);
+            transition: transform .15s ease;
+        }
+
+        .surprise-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .surprise-btn:active {
+            transform: translateY(1px);
+        }
+
+        .confetti-piece {
+            position: fixed;
+            top: 0;
+            will-change: transform, opacity;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(380deg);
+                opacity: 0;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0 60px;
+            font-family: 'Patrick Hand', cursive;
+            color: var(--ink-soft);
+            font-size: .95rem;
+        }
+
+        .divider {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .divider svg {
+            width: 220px;
+        }
+
+        @media (max-width: 640px) {
+            section {
+                padding: 80px 0;
+            }
+
+            .bloom-item {
+                width: 100px;
+            }
+
+            .flower-btn {
+                width: 80px;
+                height: 130px;
+            }
+
+            .polaroid {
+                width: 78vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- paper grain texture -->
+    <svg class="grain" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+    </svg>
+
+    <div class="bg-blobs">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+        <div class="blob b4"></div>
+    </div>
+
+    <!-- flying butterfly -->
+    <svg class="butterfly-fly" viewBox="0 0 100 90">
+        <g class="wing" style="color:var(--sky-deep)">
+            <path d="M50,45 C20,5 -10,20 5,55 C20,80 45,65 50,45 Z" fill="currentColor" opacity=".85" />
+        </g>
+        <g class="wing" style="color:var(--rose-deep); animation-delay:.05s">
+            <path d="M50,45 C80,5 110,20 95,55 C80,80 55,65 50,45 Z" fill="currentColor" opacity=".85" />
+        </g>
+        <line x1="50" y1="30" x2="50" y2="62" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" />
+    </svg>
+
+    <!-- ===================== HERO ===================== -->
+    <header class="hero">
+        <div class="sun-wrap">
+            <svg viewBox="0 0 120 120">
+                <g stroke="var(--butter-deep)" stroke-width="4" stroke-linecap="round">
+                    <line x1="60" y1="2" x2="60" y2="16" />
+                    <line x1="60" y1="104" x2="60" y2="118" />
+                    <line x1="2" y1="60" x2="16" y2="60" />
+                    <line x1="104" y1="60" x2="118" y2="60" />
+                    <line x1="18" y1="18" x2="28" y2="28" />
+                    <line x1="92" y1="92" x2="102" y2="102" />
+                    <line x1="18" y1="102" x2="28" y2="92" />
+                    <line x1="92" y1="28" x2="102" y2="18" />
+                </g>
+                <circle cx="60" cy="60" r="32" fill="var(--butter)" stroke="var(--ink)" stroke-width="3" />
+                <circle cx="50" cy="55" r="2.6" fill="var(--ink)" />
+                <circle cx="70" cy="55" r="2.6" fill="var(--ink)" />
+                <path d="M48,68 Q60,78 72,68" stroke="var(--ink)" stroke-width="2.6" fill="none"
+                    stroke-linecap="round" />
+            </svg>
+        </div>
+
+        <svg class="cloud c1" viewBox="0 0 140 60">
+            <g fill="white" stroke="var(--ink)" stroke-width="2" opacity=".95">
+                <ellipse cx="35" cy="38" rx="26" ry="16" />
+                <ellipse cx="70" cy="28" rx="32" ry="20" />
+                <ellipse cx="105" cy="38" rx="24" ry="15" />
+            </g>
+        </svg>
+        <svg class="cloud c2" viewBox="0 0 140 60">
+            <g fill="white" stroke="var(--ink)" stroke-width="2" opacity=".9">
+                <ellipse cx="35" cy="38" rx="22" ry="14" />
+                <ellipse cx="70" cy="28" rx="26" ry="17" />
+                <ellipse cx="100" cy="38" rx="20" ry="13" />
+            </g>
+        </svg>
+
+        <div class="hero-tag">a little something for you 🌷</div>
+
+        <h1>
+            For<br />
+            <span class="underline">Maria
+                <svg viewBox="0 0 300 18" preserveAspectRatio="none">
+                    <path d="M2,10 Q80,2 150,10 T298,8" stroke="var(--rose)" stroke-width="6" fill="none"
+                        stroke-linecap="round" />
+                </svg>
+            </span>
+        </h1>
+
+        <p class="lede note-font">open this whenever you need a little reminder of how much you mean to me.</p>
+
+        <div class="hero-flowers">
+            <svg viewBox="0 0 60 60" style="color:var(--rose-deep)">
+                <circle cx="30" cy="30" r="6" fill="var(--butter)" />
+                <g>
+                    <ellipse cx="30" cy="14" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="30" cy="46" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="14" cy="30" rx="13" ry="8" fill="currentColor" />
+                    <ellipse cx="46" cy="30" rx="13" ry="8" fill="currentColor" />
+                </g>
+            </svg>
+            <svg viewBox="0 0 60 60" style="color:var(--sky-deep)">
+                <circle cx="30" cy="30" r="6" fill="var(--butter)" />
+                <g>
+                    <ellipse cx="30" cy="14" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="30" cy="46" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="14" cy="30" rx="13" ry="8" fill="currentColor" />
+                    <ellipse cx="46" cy="30" rx="13" ry="8" fill="currentColor" />
+                </g>
+            </svg>
+            <svg viewBox="0 0 60 60" style="color:var(--butter-deep)">
+                <circle cx="30" cy="30" r="6" fill="var(--rose)" />
+                <g>
+                    <ellipse cx="30" cy="14" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="30" cy="46" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="14" cy="30" rx="13" ry="8" fill="currentColor" />
+                    <ellipse cx="46" cy="30" rx="13" ry="8" fill="currentColor" />
+                </g>
+            </svg>
+            <svg viewBox="0 0 60 60" style="color:var(--sage-deep)">
+                <circle cx="30" cy="30" r="6" fill="var(--butter)" />
+                <g>
+                    <ellipse cx="30" cy="14" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="30" cy="46" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="14" cy="30" rx="13" ry="8" fill="currentColor" />
+                    <ellipse cx="46" cy="30" rx="13" ry="8" fill="currentColor" />
+                </g>
+            </svg>
+            <svg viewBox="0 0 60 60" style="color:var(--rose-deep)">
+                <circle cx="30" cy="30" r="6" fill="var(--sky)" />
+                <g>
+                    <ellipse cx="30" cy="14" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="30" cy="46" rx="8" ry="13" fill="currentColor" />
+                    <ellipse cx="14" cy="30" rx="13" ry="8" fill="currentColor" />
+                    <ellipse cx="46" cy="30" rx="13" ry="8" fill="currentColor" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="scroll-cue">
+            <span>scroll for proof</span>
+            <svg width="20" height="26" viewBox="0 0 20 26">
+                <path d="M10,2 V22 M3,15 L10,22 L17,15" stroke="var(--ink-soft)" stroke-width="2.4" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- ===================== GARDEN OF REASONS ===================== -->
+    <section class="garden">
+        <div class="container center" data-animate>
+            <span class="eyebrow">exhibit a</span>
+            <h2 class="section-title">A Little Garden of <span class="accent">Reasons</span></h2>
+            <p class="section-sub">tap each flower to watch it bloom 🌸</p>
+        </div>
+
+        <div class="container">
+            <div class="garden-bed" id="garden-bed">
+                <!-- soil -->
+                <svg class="soil" viewBox="0 0 1000 70" preserveAspectRatio="none">
+                    <path d="M0,30 Q150,5 300,30 T600,28 T1000,32 V70 H0 Z" fill="var(--sage-deep)" opacity="0.25" />
+                </svg>
+
+                <!-- flower items injected by template below, repeated x7 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CORKBOARD ===================== -->
+    <section class="corkboard">
+        <div class="container center" data-animate>
+            <span class="eyebrow">exhibit b</span>
+            <h2 class="section-title">A Few Things Worth <span class="accent">Pinning Up</span></h2>
+            <p class="section-sub">a reminder of what's to come when we finally meet 💛</p>
+        </div>
+
+        <div class="container">
+            <div class="polaroids" data-animate>
+                <div class="polaroid">
+                    <div class="tape"></div>
+                    <div class="frame" style="padding: 0; overflow: hidden; border: none; background: none;">
+                        <img src="photos/RUID2b72d09de99d4fd4a628e5a8edefc959.jpg" alt="Birthday Poster"
+                            style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+                    <div class="cap">u made this for my birthday🥹</div>
+                </div>
+                <div class="polaroid">
+                    <div class="tape"></div>
+                    <div class="frame">
+                        <span>we'll fill this place<br />when we meet</span>
+                    </div>
+                    <div class="cap">soon...</div>
+                </div>
+                <div class="polaroid">
+                    <div class="tape"></div>
+                    <div class="frame">
+                        <span>reserved for our<br />first real hug</span>
+                    </div>
+                    <div class="cap">can't wait</div>
+                </div>
+                <div class="polaroid">
+                    <div class="tape"></div>
+                    <div class="frame">
+                        <span>our first<br />photo together</span>
+                    </div>
+                    <div class="cap">future memories</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== LETTER ===================== -->
+    <section class="letter-section">
+        <div class="container center" data-animate>
+            <span class="eyebrow">exhibit c</span>
+            <h2 class="section-title">Okay, One <span class="accent">More Thing</span>...</h2>
+            <p class="section-sub">tap the envelope</p>
+        </div>
+
+        <div class="envelope-wrap">
+            <div class="envelope" id="envelope">
+                <div class="body"></div>
+                <div class="flap"></div>
+                <div class="seal">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12,21 C12,21 2,14.5 2,8.2 C2,4.5 5,2 8,2 C10,2 11.5,3.2 12,4.5 C12.5,3.2 14,2 16,2 C19,2 22,4.5 22,8.2 C22,14.5 12,21 12,21 Z"
+                            fill="white" />
+                    </svg>
+                </div>
+                <div class="tap-label">tap to open</div>
+            </div>
+
+            <div class="letter-card" id="letter-card">
+                <p class="handwritten" style="font-size:2rem; color:var(--rose-deep); margin-bottom:18px;">hiiii Maria,</p>
+                <p>ion really need a reason to write this, I just wanted you to have something thas only urs.
+                    Something small you can come back to on a hard day, a slow Sunday, or just because.</p>
+                <p>Loving you has been the easiest complicated thing ive ever done. Easy, cuz its you.
+                    Complicated, because I keep running out of new ways to say how much you mean to me — so instead, I
+                    built you a tiny garden you can visit whenever you need a reminder.</p>
+                <p>Thank u for eveything, every single day, even on the days I don't make it easy. I notice it. I
+                    don't say that enough, but I notice everything.</p>
+                <p>Here's to more ridiculous inside jokes, and counting down the days until we finally
+                    meet in person.</p>
+                <p>u da bestttt, and i hope you have the best life. today, and every other day this calendar has to
+                    offer.</p>
+                <p class="sign">Yours, always<br />adam</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CLOSER ===================== -->
+    <section class="closer">
+        <div class="container" data-animate>
+            <div class="divider">
+                <svg viewBox="0 0 220 20">
+                    <path d="M2,10 Q40,2 70,10 T140,10 T218,10" stroke="var(--rose)" stroke-width="3" fill="none"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+            <h2 class="section-title">You make the distance<br />feel <span class="accent">worth it.</span></h2>
+            <button class="surprise-btn" id="surprise-btn">tap for a surprise 🎉</button>
+        </div>
+    </section>
+
+    <footer>
+        made with doodles &amp; a slightly unreasonable amount of love, just for you maria 💛
+    </footer>
+
+    <script>
+        // ---------- scroll reveal ----------
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+        // ---------- build the flower garden ----------
+        const reasons = [
+            "The way you type exactly what I'm thinking before I can even send it.",
+            "You make staring at a screen feel like the best part of my day.",
+            "The way we can text for hours and it feels like minutes.",
+            "Getting a message from you fixes roughly 97% of bad days. It's a documented fact.",
+            "You're the first person I want to text when I wake up.",
+            "You make the distance feel like nothing, but I still can't wait to close it.",
+            "Simply put — you're my favorite notification and my favorite person."
+        ];
+
+        const colors = ['rose-deep', 'sky-deep', 'butter-deep', 'sage-deep'];
+        const centerColors = ['butter', 'rose', 'sky', 'sage'];
+
+        function petalFlowerSVG(colorVar, centerVar) {
+            return `
+    <svg viewBox="0 0 100 160">
+      <!-- stem -->
+      <path d="M50,160 Q44,120 50,90" stroke="var(--sage-deep)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M50,128 Q35,118 28,130" stroke="var(--sage-deep)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M50,108 Q66,100 72,112" stroke="var(--sage-deep)" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+      <!-- bud (before bloom) -->
+      <g class="bud">
+        <path d="M50,68 C40,68 36,82 50,95 C64,82 60,68 50,68 Z" fill="var(--${colorVar})" stroke="var(--ink)" stroke-width="2.2"/>
+      </g>
+
+      <!-- bloomed petals -->
+      <g class="petals" style="color:var(--${colorVar})">
+        <g transform="translate(50,78)">
+          <g transform="rotate(0)"><path d="M0,0 C-15,-9 -13,-30 0,-40 C13,-30 15,-9 0,0 Z" fill="currentColor" stroke="var(--ink)" stroke-width="2"/></g>
+          <g transform="rotate(72)"><path d="M0,0 C-15,-9 -13,-30 0,-40 C13,-30 15,-9 0,0 Z" fill="currentColor" stroke="var(--ink)" stroke-width="2"/></g>
+          <g transform="rotate(144)"><path d="M0,0 C-15,-9 -13,-30 0,-40 C13,-30 15,-9 0,0 Z" fill="currentColor" stroke="var(--ink)" stroke-width="2"/></g>
+          <g transform="rotate(216)"><path d="M0,0 C-15,-9 -13,-30 0,-40 C13,-30 15,-9 0,0 Z" fill="currentColor" stroke="var(--ink)" stroke-width="2"/></g>
+          <g transform="rotate(288)"><path d="M0,0 C-15,-9 -13,-30 0,-40 C13,-30 15,-9 0,0 Z" fill="currentColor" stroke="var(--ink)" stroke-width="2"/></g>
+          <circle r="11" fill="var(--${centerVar})" stroke="var(--ink)" stroke-width="2"/>
+        </g>
+      </g>
+    </svg>`;
+        }
+
+        const bed = document.getElementById('garden-bed');
+        reasons.forEach((reason, i) => {
+            const c = colors[i % colors.length];
+            const cc = centerColors[i % centerColors.length];
+            const item = document.createElement('div');
+            item.className = 'bloom-item';
+            item.innerHTML = `
+      <button class="flower-btn" aria-label="reveal a reason">${petalFlowerSVG(c, cc)}</button>
+      <div class="hint note-font">tap me</div>
+      <p class="reason-note">${reason}</p>
+    `;
+            const btn = item.querySelector('.flower-btn');
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('bloomed');
+                item.classList.toggle('active');
+            });
+            bed.appendChild(item);
+        });
+
+        // ---------- envelope ----------
+        const envelope = document.getElementById('envelope');
+        const letterCard = document.getElementById('letter-card');
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('open');
+            letterCard.classList.toggle('open');
+        });
+
+        // ---------- confetti surprise ----------
+        const surpriseBtn = document.getElementById('surprise-btn');
+        const confettiColors = ['var(--rose)', 'var(--sky)', 'var(--butter)', 'var(--sage)', 'var(--terracotta)'];
+
+        function spawnConfetti() {
+            const count = 36;
+            for (let i = 0; i < count; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                const isHeart = Math.random() > 0.5;
+                const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                const left = Math.random() * 100;
+                const size = 10 + Math.random() * 14;
+                const duration = 2.4 + Math.random() * 1.8;
+                const delay = Math.random() * 0.4;
+
+                piece.style.left = left + 'vw';
+                piece.style.animation = `fall ${duration}s ease-in ${delay}s forwards`;
+
+                if (isHeart) {
+                    piece.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24"><path d="M12,21 C12,21 2,14.5 2,8.2 C2,4.5 5,2 8,2 C10,2 11.5,3.2 12,4.5 C12.5,3.2 14,2 16,2 C19,2 22,4.5 22,8.2 C22,14.5 12,21 12,21 Z" fill="${color}"/></svg>`;
+                } else {
+                    piece.style.width = size + 'px';
+                    piece.style.height = size + 'px';
+                    piece.style.background = color;
+                    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+                }
+
+                document.body.appendChild(piece);
+                setTimeout(() => piece.remove(), (duration + delay) * 1000 + 200);
+            }
+        }
+
+        surpriseBtn.addEventListener('click', spawnConfetti);
+    </script>
+
+</body>
+
+</html>
